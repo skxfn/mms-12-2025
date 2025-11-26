@@ -27,6 +27,7 @@ class Strategy:
         raise NotImplementedError
 
 
+# Всегда предаёт (Defect).
 class Alex(Strategy):
     name = "Alex"
 
@@ -34,6 +35,7 @@ class Alex(Strategy):
         return 1
 
 
+# Всегда сотрудничает (Cooperate).
 class Bob(Strategy):
     name = "Bob"
 
@@ -41,6 +43,7 @@ class Bob(Strategy):
         return 0
 
 
+# «Око за око» (Tit-for-Tat): начинает с сотрудничества, затем повторяет ход соперника.
 class Clara(Strategy):
     name = "Clara"
 
@@ -50,6 +53,7 @@ class Clara(Strategy):
         return opponent_history[-1]
 
 
+# Анти Tit-for-Tat: начинает с сотрудничества, затем играет противоположно последнему ходу соперника.
 class Denis(Strategy):
     name = "Denis"
 
@@ -59,6 +63,7 @@ class Denis(Strategy):
         return 1 - opponent_history[-1]
 
 
+# Периодическое предательство: предаёт раз в 20 ходов, иначе сотрудничает.
 class Emma(Strategy):
     name = "Emma"
 
@@ -66,6 +71,7 @@ class Emma(Strategy):
         return 1 if (round_index % 20 == 0) else 0
 
 
+# «Жёсткий триггер» (Grim Trigger): сотрудничает до первого предательства соперника, затем всегда предаёт.
 class Frida(Strategy):
     name = "Frida"
 
@@ -82,6 +88,7 @@ class Frida(Strategy):
         return 1 if self._opponent_defected_ever else 0
 
 
+# «Павлов» (Win-Stay, Lose-Shift): если предыдущая выплата >= 3 — повторяет ход, иначе меняет.
 class George(Strategy):
     name = "George"
 
@@ -177,6 +184,7 @@ def _geometric_count(success_probability: float, max_len: int = 20) -> int:
     return count
 
 
+# Случайная стратегия: сотрудничает и предаёт с вероятностью 0.5.
 class Hank(Strategy):
     name = "Hank"
 
@@ -184,6 +192,7 @@ class Hank(Strategy):
         return 1 if random.random() < 0.5 else 0
 
 
+# «Почти всегда сотрудничает»: сотрудничает с вероятностью 0.9, иначе предаёт.
 class Ivan(Strategy):
     name = "Ivan"
 
@@ -191,6 +200,7 @@ class Ivan(Strategy):
         return 0 if random.random() < 0.9 else 1
 
 
+# Мягкий Tit-for-Tat: отвечает предательством на предательство, но прощает с p = 0.25.
 class Jack(Strategy):
     name = "Jack"
 
@@ -204,6 +214,7 @@ class Jack(Strategy):
         return 0 if random.random() < 0.25 else 1
 
 
+# Нойзовый копировщик: повторяет последний ход соперника, но с p = 0.25 переворачивает его.
 class Kevin(Strategy):
     name = "Kevin"
 
@@ -218,6 +229,7 @@ class Kevin(Strategy):
         return base
 
 
+# Периодическая стратегия: предаёт каждые P ходов, где P ~ Uniform{1..50}.
 class Lucas(Strategy):
     name = "Lucas"
 
@@ -231,6 +243,7 @@ class Lucas(Strategy):
         return 1 if (round_index % self._period == 0) else 0
 
 
+# Блочная стратегия: чередует блоки одинаковых ходов случайной длины (0..20).
 class Max(Strategy):
     name = "Max"
 
@@ -250,6 +263,7 @@ class Max(Strategy):
         return self._current_move
 
 
+# Наказание геометрической длины: после предательства соперника наказывает случайное число ходов; иначе сотрудничает.
 class Natan(Strategy):
     name = "Natan"
 
